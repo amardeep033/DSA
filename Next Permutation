@@ -1,0 +1,33 @@
+Next Permutation
+Example: 2...1_54300 -> 2...3_00145
+
+------------------------------------------------------------------------------------------------------------------
+
+1. max prefix same ->  then next bigger
+2. for next bigger -> find break point -> reverse traverse -> [i] > [i-1]
+3. at break point -> find next just bigger in rest -> obviously first elem from reverse as asc in rev
+4. swap and sort
+5. Note: if all desc like 321 -> no break point -> directly sort
+
+------------------------------------------------------------------------------------------------------------------
+
+int ind1=-1;
+for(int i=nums.size()-1;i>0;i--){
+    if(nums[i]>nums[i-1]){
+        ind1=i-1;
+        break;
+    }
+}
+
+if(ind1==-1){
+    return reverse(nums.begin(),nums.end());
+}
+
+for(int i=nums.size()-1;i>0;i--){
+    if(nums[i]>nums[ind1]){
+        swap(nums[ind1],nums[i]);
+        break;
+    }
+}
+
+sort(nums.begin()+ind1+1,nums.end());
