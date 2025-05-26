@@ -1,0 +1,28 @@
+1. sum of all = (n*(n+1))/2 --------> S - Sn = val1
+   sum of square = (n*(n+1)*(2n+1))/6 ------> S^2 - Sn^2 = val2 ---> (a+b) (a-b)
+   two equation ==> get value
+--------------------------------------------------------------------------------------
+
+2. iterate left to right
+   for given val --> mark val-1 as -ve
+   this gives you repeating and you know expected
+   so get missing
+--------------------------------------------------------------------------------------
+
+int n=nums.size();
+vector<int> res;
+int sum=0;
+for(int i=0;i<n;i++){
+    int abs_val=abs(nums[i]);
+    sum=sum+abs_val;
+    if(nums[abs_val-1]<0){
+        res.push_back(abs_val);
+    } else {
+        nums[abs_val-1]*=-1;
+    }
+}
+int tot_sum = (n*(n+1))/2;
+res.push_back(abs(tot_sum-(sum-res[0])));
+return res;
+--------------------------------------------------------------------------------------
+
