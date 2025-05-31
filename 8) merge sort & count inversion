@@ -1,0 +1,61 @@
+-> recursively break
+-> then merge
+-> for inversion count ===> inv += (mid - i + 1); when arr[i]>arr[j]
+    [2,4] vs [1,3] => (2,1) (4,1) and (4,3) => 3
+    2 vs 1 => 1 => inv => i to mid => 2
+    2 vs 3 => 2 => x
+    4 vs 3 => 3 => inv => i to mid => 1
+    4      => 4
+---------------------------------------------------------------------------------------------------------------------
+void mergeSort(vector<int>& arr, int l, int r) {
+    // code here
+    if(l<r){
+        int mid=(l+r)/2;                 ---------------------------------> int mid = l + (r - l) / 2;  //l+r can overflow
+        vector<int> prefix(l, mid);      ---------------------------------> X
+        vector<int> postfix(mid+1,r);    ---------------------------------> X
+        mergeSort(prefix,l,mid);         ---------------------------------> mergeSort(arr,l,mid);
+        mergeSort(postfix,mid+1,r);      ---------------------------------> mergeSort(arr,mid+1,r); 
+        arr = merge(prefix,postfix);     ---------------------------------> merge(arr,l,mid,r);
+    }
+}
+  
+//vector<int> merge(vector<int> &arr,int l,int mid, int r) -----------> take help of temp
+---------------------------------------------------------------------------------------------------------------------
+
+vector<int> merge(vector<int> &arr,int l,int mid, int r){
+vector<int> temp;
+int i=l;
+int j=mid+1;
+while(i<=mid && j<=r){
+    if(arr[i]<=arr[j]){
+        temp.push_back(arr[i]);
+        i++;
+    } else {
+        temp.push_back(arr[j]);
+        j++;
+    }
+}
+while(i<=mid){
+    temp.push_back(arr[i]);
+    i++;
+}
+while(j<=r){
+                               --------------------------------------------------> inv += (mid - i + 1);
+    temp.push_back(arr[j]);
+    j++;
+}
+int pos=0;
+for(int i=l;i<=r;i++)
+{
+    arr[i]=temp[pos];
+    pos++;
+}
+return temp;
+}
+---------------------------------------------------------------------------------------------------------------------
+
+int inversionCount(vector<int> &arr) {
+    int inv=0;
+    mergeSort(arr,0,arr.size()-1,inv);
+    return inv;
+}
