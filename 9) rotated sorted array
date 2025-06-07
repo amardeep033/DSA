@@ -1,0 +1,50 @@
+1. find min -- in distinct
+2. check exist -- in distinct
+3. check exist -- in duplicate
+-------------------------------------------------------------------------------------------------------------
+-> at any point -- either right sorted or left sorted
+-> II[0,1,2] or DI[2,0,1] or ID[1,2,0] : it can't be DD[2,1,0]
+-> check mid point belongs to which part: left or right
+-> we have only left, right and mid to identify: [1]right: 5...1...2 (mid<r)   [2]left: 5...7...1 (mid>r)
+-> issue when non distinct and [l==mid==r] => 10 1 11, 11 0 11
+-------------------------------------------------------------------------------------------------------------
+int l=0;
+int r=nums.size()-1;
+while(l>=0 && r<nums.size() && l<=r){
+    int mid= l + (r - l) / 2;
+    if(nums[mid]==k){
+        return true;
+    } else if (nums[l]==nums[mid] && nums[mid]==nums[r]){
+        l=l+1;
+        r=r-1;
+    }
+    else if(nums[mid]<=nums[r]){
+        if(nums[mid]<=k && k<=nums[r]){
+            l=mid+1;
+        } else {
+            r=mid-1;
+        }
+    } else {
+        if(nums[l]<=k && k<=nums[mid]){
+            r=mid-1;
+        } else {
+            l=mid+1;
+        }
+    }
+}
+return false;
+-------------------------------------------------------------------------------------------------------------
+int l=0;
+int r=nums.size()-1;
+int mini=INT_MAX;
+while(l>=0 && r<nums.size() && l<=r){
+    int mid= l + (r - l) / 2;
+    mini = min(mini,nums[mid]);
+    if(nums[mid]>=nums[r]){
+        l=mid+1;
+    } else {
+        r=mid-1;
+    }
+}
+return mini;
+-------------------------------------------------------------------------------------------------------------
