@@ -1,0 +1,45 @@
+-> stations: [3,6,12,19,33]
+-> find diff: [3,6,7,14]
+-> insertion: k=2
+-> range: 1 to 14
+-> insertion logic: diff/2 is wrong ----- [1...1.5...2 => 1...1.33...1.66...2]
+                    count_req=floor((arr[i] - arr[i - 1]) / mid);
+-> in float: (double)arr[i]-arr[i-1]
+             while (r - l > 1e-6)
+             l=mid; and r=mid;
+             return round(r * 100.0) / 100.0; // round to 2 decimal place
+-------------------------------------------------------------------------------------------------
+double findSmallestMaxDist(vector<int> &arr, int k) {
+    double l=0;
+    double r=0;
+    for(int i=1;i<arr.size();i++){
+        r = max(r, (double)arr[i]-arr[i-1]); 
+    }
+    
+    double res=r;
+    if (k==0){
+        return res;
+    }
+    while (r - l > 1e-6){
+        double mid=(l+r)/2;
+        
+        int c=k;
+        bool is_possible=true;
+        for(int i=1;i<arr.size();i++){
+            double diff=arr[i]-arr[i-1];
+            int count = floor((arr[i] - arr[i - 1]) / mid);
+            if (count>c){
+                l=mid;
+                is_possible=false;
+                break;
+            } else {
+                c=c-count;
+            }
+        }
+        if(is_possible==true){
+            r=mid;
+            res=min(res,mid);
+        }
+    }
+    return res;
+}
