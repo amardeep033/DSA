@@ -1,0 +1,62 @@
+-> Iterator and two pointer for finding index
+-> Opposite of merge-sort
+-> T: O(m + n) -- S: O(1)
+----------------------------------------------------------------------------------------------------------------------------------------------
+int m=nums1.size();
+int n=nums2.size();
+int ind2=(m+n)/2;
+int ind1=ind2-1;
+
+int i=0;
+int j=0;
+
+int c=-1;
+
+int val1=-1;
+int val2=-1;
+
+while(i<m && j<n){
+    if(nums1[i]<=nums2[j]){
+        c+=1;
+        if(c==ind1){
+            val1=nums1[i];
+        } else if (c==ind2){
+            val2=nums1[i];
+        }
+        i++;
+    } else {
+        c+=1;
+        if(c==ind1){
+            val1=nums2[j];
+        } else if (c==ind2){
+            val2=nums2[j];
+        }
+        j++;
+    }    
+}
+
+while(i<m){
+    c+=1;
+    if(c==ind1){
+        val1=nums1[i];
+    } else if (c==ind2){
+        val2=nums1[i];
+    }
+    i++;
+}
+
+while(j<n){
+    c+=1;
+    if(c==ind1){
+        val1=nums2[j];
+    } else if (c==ind2){
+        val2=nums2[j];
+    }
+    j++;
+}
+
+if ((m+n)%2==0){
+    return ((val1+val2)/2.0);
+} else {
+    return val2;
+}
