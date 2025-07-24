@@ -1,0 +1,21 @@
+-> move fast n step forward
+-> slow: one step, fast: one step until fast reaches end
+-> link slow to next to next : to skip
+--------------------------------------------------------------------------------------------------------------
+ListNode* fast=head;
+ListNode* slow=head;
+ListNode* res=head;
+while(n>0){
+    fast=fast->next;
+    n--;
+}
+if(fast==NULL){
+    return slow->next;
+}
+while(fast->next!=NULL)
+{
+    slow=slow->next;
+    fast=fast->next;
+}
+slow->next=slow->next->next;
+return res;
