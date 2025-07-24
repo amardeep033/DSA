@@ -1,0 +1,13 @@
+-> slow ptr: 1 step
+-> fast ptr: 2 step
+-> until fast reaches end -> return slow
+--------------------------------------------------
+ListNode* slow = head;
+ListNode* fast = head;
+
+while(fast!=NULL && fast->next!=NULL){
+    slow=slow->next;
+    fast=fast->next->next;
+}
+
+return slow;
