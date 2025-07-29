@@ -1,0 +1,24 @@
+-> if a (start-to-end) = 5 and b=7 then by the time a reaches end.. then b will be 2 step behind
+-> if restart a.. then a will have 2 step head start
+-> so for sure, after n step a and b will meet at intersection --- swap
+-> [a1 a2] [c1 c2 c3] and [b1 b2 b3] [c1 c2 c3]
+-> a1 a2 c1 c2 c3 ==> b1 b2 b3 c1 
+-> b1 b2 b3 c1 c2 ==> c3 a1 a3 c1
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ListNode* a=headA;
+ListNode* b=headB;
+
+while(a!=b){
+    a=a->next;
+    b=b->next;
+    if(a==NULL && b==NULL){
+       return NULL; 
+    }
+    else if(a==NULL){
+        a=headB;
+    }
+    else if(b==NULL){
+        b=headA;
+    }
+}
+return a;
