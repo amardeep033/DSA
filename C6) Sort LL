@@ -1,0 +1,52 @@
+-> divide and conquer
+-> same as merge sort
+---------------------------------------------------------------------------------------------------------------------
+ListNode* sortList(ListNode* head) {
+    if(head==NULL){                               ------------------------------------> if(head==NULL || head->next==NULL){
+        return head;
+    }
+    ListNode* slow=head;
+    ListNode* fast=head;                          -------------------------------------> ListNode* temp=head;
+    while(fast!=NULL && fast->next!=NULL){
+        slow=slow->next;                          -------------------------------------> temp=slow;
+        fast=fast->next->next;
+    }
+    ListNode* head2=slow->next;                   -------------------------------------> temp->next=NULL;
+    slow->next=NULL;
+
+    ListNode* temp1=sortList(head);
+    ListNode* temp2=sortList(head2);
+    return merger(temp1,temp2);
+}
+
+ListNode* merger(ListNode* head1, ListNode* head2) {
+    ListNode* temp1=head1;        -------------------------------------------> no need
+    ListNode* temp2=head2;
+    ListNode* head=NULL;          -------------------------------------------> ListNode* head=new ListNode(0);
+    ListNode* res=head;           
+
+    while(temp1!=NULL && temp2!=NULL){
+        if(temp1->val<=temp2->val){
+            head->next=temp1;
+            temp1=temp1->next;
+        } else {
+            head->next=temp2;
+            temp2=temp2->next;
+        }
+        head=head->next;
+    }
+
+    while(temp1!=NULL){          -------------------------------------------> if(head1==NULL)
+        head->next=temp1;
+        temp1=temp1->next;
+        head=head->next;
+    }
+
+    while(temp2!=NULL){          --------------------------------------------> else
+        head->next=temp2;
+        temp2=temp2->next;
+        head=head->next;
+    }
+
+    return res->next;
+}
