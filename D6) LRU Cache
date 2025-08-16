@@ -1,0 +1,110 @@
+-> put => exist: remove -> add at top with updated value
+       => doesnt exist: remove if size==cap and then add at top with value
+-> get => exist: remove -> add to top
+       => doesnt exist: -1
+-> also dont forget to update the map
+
+1. exist or not => set
+2. exist where => index in hashmap(no set)
+3. remove => LinkedList(nothing else will remove in o(1) as reordering will needed everywhere)
+4. insert at top => Doubly linkedlist (tail->prev will be top)
+5. modify val => DLL can easily modify val
+6. capacity maintain => mp.size() 
+7. Since linkedlist => hashmap of reference(not index)
+
+----------------------------------------------------------------------------------------------------------------------
+
+int get(int key) {
+    if (mp.get(key)!=mp.end()){         ----------------> if (mp.find(key) != mp.end()){
+        Node* curr = mp.get(key);       ----------------> Node* curr = mp[key];
+        Node* next = curr->next;
+        Node* prev = curr->prev;
+        next->prev=prev;
+        prev->next=next;
+
+        Node* top=tail->prev;
+        top->next=curr;
+        tail->prev=curr;
+        curr->next=tail;
+        curr->prev=top;
+
+        return curr->val;
+    } else {
+        return -1;
+    }
+}
+
+void put(int key, int value) {
+    if (mp.get(key)!=mp.end()){         ----------------> if (mp.find(key) != mp.end()){
+        Node* curr = mp.get(key);       ----------------> Node* curr = mp[key];
+        curr->val=value;
+
+        Node* next = curr->next;
+        Node* prev = curr->prev;
+        next->prev=prev;
+        prev->next=next;
+
+        Node* top=tail->prev;
+        top->next=curr;
+        tail->prev=curr;
+        curr->next=tail;
+        curr->prev=top;                 
+    } else {
+        Node curr = new Node(value); --------------------> Node* curr = new Node(key, value);
+                                     --------------------> mp[key] = curr;
+
+        if(mp.size()==cap){          ----------------> if(mp.size()>cap){
+            Node* lru=head->next;
+            Node* lru_next=lru->next;
+            head->next=lru_next;
+            lru_next->prev=head;
+                                      -------------------> mp.erase(lru->key);
+                                      -------------------> delete lru;
+        }
+
+        Node* top=tail->prev;
+        top->next=curr;
+        tail->prev=curr;
+        curr->next=tail;
+        curr->prev=top;
+    }
+}
+
+----------------------------------------------------------------------------------------------------------------------
+class LRUCache {               //class will contain variable(+struct(with own constructor)), constructor and get/put fn
+
+                              ---------------------------------------------------------->  struct Node {
+                                                                                              int key;
+                                                                                              int val;
+                                                                                              Node* prev;
+                                                                                              Node* next;
+                                                                                              Node(int k, int v) { //P3: struct will have its own constructor
+                                                                                                  key = k;
+                                                                                                  val = v;
+                                                                                                  prev = nullptr;
+                                                                                                  next = nullptr;
+                                                                                              }
+                                                                                          };
+
+                              ----------------------------------------------------------->  unordered_map<int, Node*> mp;  //P2:now Node DS also needs to be defined
+                                                                                            int cap;
+                                                                                            Node* head;
+                                                                                            Node* tail;         
+
+    LRUCache(int capacity) {   // its a constructor(no return type + className is used)
+                               -----------------------------------------------------------> LRUCache(int capacity) {
+                                                                                              cap = capacity;                 //P1:each variable needs to be pre-defined
+                                                                                              head = new Node(-1, -1);
+                                                                                              tail = new Node(-1, -1);
+                                                                                              head->next = tail;
+                                                                                              tail->prev = head;
+                                                                                          }
+    }
+    
+    int get(int key) {
+    }
+
+    void put(int key, int value) {
+    }
+};
+----------------------------------------------------------------------------------------------------------------------
