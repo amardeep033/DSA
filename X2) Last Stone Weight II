@@ -1,0 +1,54 @@
+-> take or not take 
+-> for min: sum>0 and mini
+---------------------------------------------------------------------------------------------------------
+
+void rec(int i, int sum, int &res, int n, vector<vector<int>> &dp,vector<int>& arr){
+  if(i==n){
+      if(sum>=0){
+          res=min(res, sum);
+      }
+      return;
+  }
+  rec(i+1,sum+arr[i],res,n,dp,arr);
+  rec(i+1,sum-arr[i],res,n,dp,arr);
+}
+
+int lastStoneWeightII(vector<int>& arr) {
+  int maxi=0;
+  for(int i=0;i<arr.size();i++){
+      maxi=max(maxi,arr[i]);
+  }
+  vector<vector<int>> dp(arr.size(),(vector<int>(maxi,-1)));
+  int res = INT_MAX;
+  rec(0,0,res,arr.size(),dp,arr);
+  return res;
+}
+
+---------------------------------------------------------------------------------------------------------
+
+int rec(int i, int sum, int total, int &res, int n, vector<vector<int>> &dp,vector<int>& arr){
+    int idx = sum + total;
+    if(dp[i][idx]!=-1){
+        return dp[i][idx];
+    }
+    if(i==n){
+        if(sum>=0){
+            return dp[i][idx]= sum;
+        } else {
+            return dp[i][idx]= INT_MAX;
+        }
+    }
+    int l = rec(i+1,sum+arr[i],total,res,n,dp,arr);
+    int r = rec(i+1,sum-arr[i],total,res,n,dp,arr);
+    return dp[i][idx] = min(l,r);
+}
+
+int lastStoneWeightII(vector<int>& arr) {
+    int sum=0;
+    for(int i=0;i<arr.size();i++){
+        sum+=arr[i];
+    }
+    vector<vector<int>> dp(arr.size()+1,(vector<int>(2*sum+1,-1)));
+    int res = INT_MAX;
+    return rec(0,0,sum,res,arr.size(),dp,arr);
+}
