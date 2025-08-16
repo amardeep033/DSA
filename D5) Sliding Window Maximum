@@ -1,0 +1,27 @@
+-> Monotonic De-queue
+-> Doubly ended: since insert from front, pop from back
+-> Monotonic because: maxi always at back, mini always at front
+-> while incoming is > front ---> pop from front ===> finally push at front
+-> if windows slides, check at back if index in window or else pop from back ===> no push from back 
+-------------------------------------------------------------------------------------------------------------------------
+vector<int> res;
+deque<pair<int,int>> dq;
+for(int i=0;i<k;i++){
+    while (!dq.empty() && dq.front().second <= arr[i]){
+        dq.pop_front();
+    }
+    dq.push_front({i,arr[i]});
+}
+res.push_back(dq.back().second);
+
+for(int i=k;i<arr.size();i++){
+    while(!dq.empty() && dq.back().first+k-1<i){
+        dq.pop_back();
+    }
+    while (!dq.empty() && dq.front().second <= arr[i]){
+        dq.pop_front();
+    }
+    dq.push_front({i,arr[i]});
+    res.push_back(dq.back().second);
+}
+return res;
