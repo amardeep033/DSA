@@ -1,0 +1,54 @@
+class Solution {
+public:
+    bool rec(int i, int j, int n, int m, string k, string &temp, vector<vector<char>>& arr, vector<vector<bool>> &vis, vector<pair<int,int>> &dir) {
+        if (temp == k){
+            return true;
+        }
+
+        if(temp.size() >= k.size()){
+            return false;
+        }
+        
+        if (!(i >= 0 && i < n && j >= 0 && j < m)) {
+            return false;
+        }
+
+        vector<bool> res(4, false);
+        for(int x=0;x<dir.size();x++){
+            int y=i+dir[x].first;
+            int z=j+dir[x].second;
+            if (y>=0 && y<n && z>=0 && z<m && vis[y][z]==false && temp+arr[y][z]==k.substr(0,temp.size()+1)){
+                temp.push_back(arr[y][z]);
+                vis[y][z]=true;
+                res[x]=rec(y, z, n, m, k, temp, arr, vis, dir);
+                temp.pop_back();
+                vis[y][z]=false;
+            }
+        }
+        return res[0] || res[1] || res[2] || res[3];
+    }
+
+    bool exist(vector<vector<char>>& arr, string k) {
+        int n=arr.size();
+        int m=arr[0].size();
+
+        vector<pair<int,int>> dir = {{0,1}, {1,0}, {0,-1}, {-1,0}};
+        
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(arr[i][j]==k[0]){
+                    vector<vector<bool>> vis(n, vector<bool>(m, false));
+                    vis[i][j] = true;
+                    string temp = string(1, k[0]);
+                    if (rec(i, j, n, m, k, temp, arr, vis, dir) == true) {
+                        return true;
+                    } else {
+                        continue;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+};
