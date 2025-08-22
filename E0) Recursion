@@ -1,0 +1,52 @@
+
+-> subarray --- order + cont --- [1,2,3,4] --- [2,3] --- nested for loops --- Kadane/sliding window/prefix sum
+-> subseq --- order + no cont --- [1,2,3,4] --- [1,3,4] --- DP(take, not take) --- DP/LIS/LCS
+-> subset --- no order + no cont --- [1,2,3,4] --- [4,2] --- DP(take, not take) --- DP/bitmask/backtracking
+-> Subarray ⊆ Subsequence ⊆ Subset
+
+---------------------------------------------------------------------------------------------------------------------
+
+-> return type: if return all possible, then container with void return type
+                if return any one, then return type will be same
+                if return count, then return type will be 0/1
+
+| **Return All**             | Collect all answers                      | LC 78 (Subsets), LC 46 (Permutations), LC 39                                                                    |
+| **Return One**             | Stop when first valid found              | LC 112 (Path Sum), LC 79 (Word Search)                                                                          |
+| **Return Count**           | Count total solutions                    | LC 494 (Target Sum), LC 62 (Unique Paths)                                                                       |
+| **Min/Max**                | Optimal solution                         | LC 322 (Coin Change), LC 64 (Min Path Sum)                                                                      |
+| **Boolean**                | Yes/No decision                          | LC 416 (Partition Equal Subset Sum), LC 139                                                                     |
+| **No Return**              | Just traversal / processing              | LC 144 (Preorder), LC 94 (Inorder)                                                                              |
+| **Backtracking**           | Multiple paths with undo                 | LC 51 (N-Queens), LC 37 (Sudoku Solver)                                                                         |
+| **Kadane / Carry Forward** | DP-looking, but only need rolling states | LC 53 (Max Subarray Sum), LC 152 (Max Product Subarray), LC 121 (Best Time to Buy Stock), LC 198 (House Robber) |
+
+---------------------------------------------------------------------------------------------------------------------
+
+| **Subarray**    | Max sum                         | Kadane (LC 53)                |
+|                 | Max product                     | Kadane variant (LC 152)       |
+|                 | Circular max sum                | Kadane + minKadane (LC 918)   |
+|                 | Longest sum=0                   | Prefix sum + hashmap          |
+|                 | Longest sum=k                   | Prefix sum + hashmap          |
+|                 | Count sum=k                     | Prefix sum + hashmap (LC 560) |
+|                 | Equal 0s & 1s                   | Prefix sum + hashmap          |
+|                 | Longest at most k distinct      | Sliding window (LC 340)       |
+|                 | Longest at most 2 distinct      | Sliding window (LC 159)       |
+| **Subsequence** | Max sum                         | Take all positives            |
+|                 | Count sum=k                     | Recursion+memo / DP (LC 494)  |
+|                 | LIS length                      | DP / binary search (LC 300)   |
+|                 | LIS sum                         | DP variant                    |
+|                 | LCS                             | DP (LC 1143)                  |
+|                 | Count distinct subsequences     | DP (LC 115)                   |
+|                 | Longest palindromic subsequence | DP (LC 516)                   |
+|                 | Max sum divisible by 3          | DP (LC 1262)                  |
+| **Subset**      | Generate all                    | Backtracking (LC 78)          |
+|                 | Handle duplicates               | Backtracking + skip (LC 90)   |
+|                 | Sum=k decision                  | DP (LC 416)                   |
+|                 | Count subsets with sum=k        | DP                            |
+|                 | Min subset sum diff             | DP partition                  |
+|                 | Partition into k subsets        | Backtracking (LC 698)         |
+|                 | Largest divisible subset        | DP (LC 368)                   |
+| **String**      | LPS                             | DP (LC 516)                   |
+|                 | LCS                             | DP (LC 1143)                  |
+|                 | Min insert/delete               | LCS-based                     |
+|                 | Count subseq = target           | DP (LC 115)                   |
+|                 | Is subseq?                      | Two pointers (LC 392)         |
