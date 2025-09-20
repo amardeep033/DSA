@@ -1,0 +1,14 @@
+-> A heap is a complete binary tree (all levels filled except possibly last, filled left to right).
+-> Min-Heap: Parent node ≤ children (smallest element at root) -- kth largest -- priority_queue<int,vector<int>,greater<int>> pq;
+   Max-Heap: Parent node ≥ children (largest element at root) -- kth smallest -- priority_queue<int> pq;
+-> push: log n , pop(remove root): log n , top:	O(1)
+-> Scheduling tasks, Dijkstra’s algorithm, Merging k sorted lists.
+---------------------------------------------------------------------------------------------------------------
+priority_queue<int,vector<int>,greater<int>> pq;
+for(int i=0;i<nums.size();i++){
+    pq.push(nums[i]);
+    if(pq.size()>k){
+        pq.pop();
+    }
+}
+return pq.top();
