@@ -1,0 +1,73 @@
+-> return minimum count such that task executed after cooldown 
+-> all possible list : choose max freq one
+-> so for each char we need : cooldown left + freq left
+---------------------------------------------------------------------------------------------------------
+
+int leastInterval(vector<char>& arr, int k) {
+    map<char, int> freq;
+    for (auto ch : arr){
+        freq[ch]++;
+    }
+
+    priority_queue<pair<int,char>> pq;
+    for (auto &p : freq){
+        pq.push({p.second, p.first});
+    }
+
+    map<char,int> lastIndex;  
+    for (auto &p : freq) {
+        lastIndex[p.first] = -k; 
+    }
+
+    int index = 0;
+    int res = 0;
+
+    while (!pq.empty()) {
+        vector<pair<int,char>> temp;
+
+        while (!pq.empty()) {
+            auto tp = pq.top();
+            int freq = tp.first;
+            char ch = tp.second;
+            pq.pop();
+
+            if (index - lastIndex[ch] > k) {
+                lastIndex[ch] = index;
+                if (freq > 1) {
+                    pq.push({freq - 1, ch});
+                }
+                break;
+            } else {
+                temp.push_back({freq, ch});
+            }
+        }
+
+        for (auto &p : temp) {
+            pq.push(p);
+        }
+            
+        if (!pq.empty()) {
+            res++;
+            index++;
+        }
+    }
+    return res;
+}
+
+---------------------------------------------------------------------------------------------------------
+
+int leastInterval(vector<char>& tasks, int n) {
+    vector<int> mp(26,0);
+    int max_freq=0, count_maxfreq=0, sz=tasks.size();
+    for(char i:tasks){
+        mp[i-'A']++;  // count the number of times a task needs to be done
+        if(mp[i-'A']>max_freq){
+            max_freq=mp[i-'A']; // find maximum frequency 
+        }
+    }   
+    for(int i=0;i<26;i++){
+        if(mp[i]==max_freq) count_maxfreq++; // number of tasks having maximum frequency
+    }
+    int time= (max_freq-1)*(n+1)+count_maxfreq; // total time taken to complete all tasks
+    return max(time,sz);
+}
