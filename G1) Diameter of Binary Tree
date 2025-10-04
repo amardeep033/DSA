@@ -1,0 +1,57 @@
+-> height/depth : max nodes or edge from root to leaf
+-> diameter: longest path between any two node (not necessarily through root)
+-> have global maxi -> traverse each node as we don't know which node will be involved -> calc max(left,right)
+
+----------------------------------------------------------------------------------
+
+int maxDepth(TreeNode* root) {
+    if(root == NULL){
+        return 0;
+    }
+    return 1+max(maxDepth(root->left),maxDepth(root->right));
+}
+
+----------------------------------------------------------------------------------
+
+int maxDepth(TreeNode* root) {
+    if(root == NULL){
+        return 0;
+    }
+    return 1+max(maxDepth(root->left),maxDepth(root->right));
+}
+
+void traverse(TreeNode* root, int &maxi) {
+    if(root==NULL){
+        return;
+    }
+    int l=maxDepth(root->left);
+    int r=maxDepth(root->right);
+    maxi=max(maxi, l+r);
+    traverse(root->left,maxi);
+    traverse(root->right,maxi);
+}
+
+int diameterOfBinaryTree(TreeNode* root) {
+    int maxi=INT_MIN;
+    traverse(root,maxi);
+    return maxi;
+}
+
+----------------------------------------------------------------------------------
+
+int maxDepth(TreeNode* root, int &maxi) {
+    if(root==NULL){
+        return 0;
+    }
+    int l=maxDepth(root->left, maxi);
+    int r=maxDepth(root->right, maxi);
+    maxi=max(maxi, l+r);
+
+    return 1+max(l,r);
+}
+
+int diameterOfBinaryTree(TreeNode* root) {
+    int maxi=INT_MIN;
+    maxDepth(root,maxi);
+    return maxi;
+}
