@@ -1,0 +1,23 @@
+-> maxi = self + max(left, right, left+right, 0); // ways a path can be formed
+-> return self + max(left, right, 0); //ways above parent node can be included in below path
+-----------------------------------------------------------------------------------------------
+
+ int maxSum(TreeNode* root, int &maxi) {
+    if(root == NULL){
+        return 0;
+    }
+    int l=maxSum(root->left, maxi);
+    int r=maxSum(root->right, maxi);
+    int val=root->val;
+    int maxi1=max(val,val+l+r);
+    int maxi2=max(val+l,val+r);
+    int maxi3=max(maxi1,maxi2);
+    maxi=max(maxi,maxi3);
+    return max(maxi2,val);
+}
+
+int maxPathSum(TreeNode* root) {
+    int maxi=INT_MIN;
+    maxSum(root,maxi);
+    return maxi;
+}
