@@ -1,0 +1,57 @@
+1. DFS
+-> each node can be marked on x,y coordinate
+-> for each x, select the max y
+------------------------------------------------------------------------
+void traverse(Node *root, int x, int y, map<int, pair<int, int>> &mp){
+    if(root == NULL) {
+        return;
+    }
+    if(mp.find(x)==mp.end()){
+        mp[x] = {y,root->data};
+    } else {
+        if (mp[x].first <= y) {
+            mp[x] = {y,root->data};
+        }
+    }
+    traverse(root->left, x-1, y+1, mp);
+    traverse(root->right, x+1, y+1, mp);
+}
+
+vector<int> bottomView(Node *root) {
+    map<int, pair<int, int>> mp;
+    traverse(root, 0, 0, mp);
+    vector<int> vec;
+    for (auto &it : mp) {
+        vec.push_back(it.second.second);
+    }
+    return vec;
+}
+
+------------------------------------------------------------------------------------------------------------------------------------------------
+
+2. BFS
+-> just have a queue: for order level traversal 
+-> no need of y, as later one will be always down
+
+queue<pair<Node*, int>> q;
+map<int, int> mp;
+q.push({root, 0});
+
+while(!q.empty()){
+    auto [node, x] = q.front(); 
+    q.pop();
+    
+    mp[x]=node->data;
+    if(node->left!=NULL) {
+        q.push({node->left, x-1});
+    }
+    if(node->right!=NULL) {
+        q.push({node->right, x+1});
+    }
+}
+
+vector<int> vec;
+for (auto &it : mp) {
+    vec.push_back(it.second);
+}
+return vec;
