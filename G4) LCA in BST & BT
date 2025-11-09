@@ -1,0 +1,24 @@
+LCA in BST
+-> Given two number 
+-> there will be three cases: 
+  both small -> traverse left
+  one large one small -> traverse right
+  both large -> return self
+  one equal to node -> return self
+-----------------------------------------------
+if(root == NULL){
+    return NULL;
+}
+if(root==p || root==q || (p->val>root->val && q->val<root->val) || (p->val<root->val && q->val>root->val)){
+    return root;
+}
+if(p->val<root->val && q->val<root->val){
+    return lowestCommonAncestor(root->left, p, q);
+} else {
+    return lowestCommonAncestor(root->right, p, q);
+}
+
+
+----------------------------------------------------------------------------------------------
+BT
+-> 
