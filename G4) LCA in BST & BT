@@ -5,7 +5,9 @@ LCA in BST
   one large one small -> traverse right
   both large -> return self
   one equal to node -> return self
------------------------------------------------
+
+------------
+
 if(root == NULL){
     return NULL;
 }
@@ -20,5 +22,51 @@ if(p->val<root->val && q->val<root->val){
 
 
 ----------------------------------------------------------------------------------------------
+
 BT
--> 
+-> track path from root to p and q 
+-> traverse path and result is last matching 
+
+--------
+
+void find_path(TreeNode* root, TreeNode* node, vector<TreeNode*> &path, bool &found) { //flag found is imp as while going back - dont pop
+    path.push_back(root);
+    if (root==node){
+        found=true;
+        return;
+    }
+    if(root->left!=NULL){
+        find_path(root->left, node, path, found);
+    }
+    if(root->right!=NULL){
+        find_path(root->right, node, path, found);
+    }
+    if(found==false){
+        path.pop_back();
+    }
+}
+
+--------
+
+TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+
+    bool found=false;
+    vector<TreeNode*> path_p;
+    find_path(root, p, path_p, found);
+
+    found=false;
+    vector<TreeNode*> path_q;
+    find_path(root, q, path_q, found);
+
+    for(int i=1;i<path_p.size() && i<path_q.size();i++){
+        if (path_p[i]->val != path_q[i]->val) {
+            return path_p[i-1];
+        }           
+    }
+
+    if(path_p.size()<path_q.size()) {
+       return path_p[path_p.size()-1];
+    } else {
+       return path_q[path_q.size()-1];
+    } 
+}
