@@ -1,0 +1,115 @@
+-> burn time : farthest node from given node
+-> create a map of parent node 
+-> do bfs on all 3 direction 
+-> maintain visited node 
+
+-------------------------------------------------------------------------------------------------------
+
+void calc_parent(TreeNode* root, map<TreeNode*, TreeNode*> &prnt){
+    if(root->left!=NULL){
+        prnt[root->left] = root;
+        calc_parent(root->left,prnt);
+    }
+
+    if(root->right!=NULL){
+        prnt[root->right] = root;
+        calc_parent(root->right,prnt);
+    } 
+}
+
+vector<int> distanceK(TreeNode* root, TreeNode* target, int k) {
+    map<TreeNode*, TreeNode*> prnt;
+    calc_parent(root,prnt);
+
+    set<TreeNode*> visited;
+    queue<TreeNode*> q;
+    vector<int> res;
+    visited.insert(target);
+    q.push(target);
+
+    while(!q.empty() && k>0) {
+        int n = q.size();
+        k--;
+        for(int i=0;i<n;i++){
+            TreeNode* curr = q.front();
+            q.pop();
+            if(curr!=root){
+                TreeNode* p = prnt[curr];
+                if (!visited.contains(p)){
+                    visited.insert(p);
+                    q.push(p);
+                }
+            }
+            if(curr->left!=NULL && !visited.contains(curr->left)){
+                visited.insert(curr->left);
+                q.push(curr->left);
+            }
+            if(curr->right!=NULL && !visited.contains(curr->right)){
+                visited.insert(curr->right);
+                q.push(curr->right);
+            }
+        }
+    }
+    while(!q.empty()){
+        TreeNode* curr = q.front();
+        q.pop();
+        res.push_back(curr->val);
+    } 
+    return res;
+}
+
+-------------------------------------------------------------------------------------------------------
+
+void calc_parent(TreeNode* root, map<TreeNode*, TreeNode*> &prnt, int start, TreeNode* &target){
+    if(root->val==start){
+        target = root;
+    }
+
+    if(root->left!=NULL){
+        prnt[root->left] = root;
+        calc_parent(root->left,prnt, start, target);
+    }
+
+    if(root->right!=NULL){
+        prnt[root->right] = root;
+        calc_parent(root->right,prnt, start, target);
+    } 
+}
+
+
+int amountOfTime(TreeNode* root, int start) {
+    map<TreeNode*, TreeNode*> prnt;
+    TreeNode* target = root;
+    calc_parent(root,prnt, start, target);
+
+    set<TreeNode*> visited;
+    queue<TreeNode*> q;
+    visited.insert(target);
+    q.push(target);
+    int res=-1;
+
+    while(!q.empty()) {
+        int n = q.size();
+        res++;
+        for(int i=0;i<n;i++){
+            TreeNode* curr = q.front();
+            q.pop();
+            if(curr!=root){
+                TreeNode* p = prnt[curr];
+                if (!visited.contains(p)){
+                    visited.insert(p);
+                    q.push(p);
+                }
+            }
+            if(curr->left!=NULL && !visited.contains(curr->left)){
+                visited.insert(curr->left);
+                q.push(curr->left);
+            }
+            if(curr->right!=NULL && !visited.contains(curr->right)){
+                visited.insert(curr->right);
+                q.push(curr->right);
+            }
+        }
+    }
+    return res;
+}
